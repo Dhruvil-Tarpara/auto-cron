@@ -1,12 +1,13 @@
-name: Professional Daily Commits
+name: Daily Automated Commits
 
 on:
   schedule:
-    - cron: '0 9 * * *'  # 9 AM UTC
+    # Runs every day at 09:00 UTC (9 AM)
+    - cron: '0 9 * * *'
   workflow_dispatch:
 
 jobs:
-  professional-commit:
+  daily-commit:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -14,54 +15,18 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Generate professional log
+      - name: Make daily update
         run: |
-          # Create or update the development log
-          if [ ! -f DEV_LOG.md ]; then
-            cat <<EOF > DEV_LOG.md
-            # Development Progress Tracker
-
-            ## Project Activity Overview
-
-            | Date       | Commit Type | Progress Indicator |
-            |------------|-------------|--------------------|
-            EOF
+          if [ ! -f daily_log.md ]; then
+            echo "# Daily Commit Log" > daily_log.md
           fi
-
-          # Generate random development activity
-          COMMIT_TYPES=("Feature" "Bugfix" "Refactor" "Documentation" "Optimization" "Testing")
-          RANDOM_TYPE=${COMMIT_TYPES[$RANDOM % ${#COMMIT_TYPES[@]}]}
-          
-          # Progress emoji indicator
-          PROGRESS=("🟢" "🔵" "🟡" "🟠" "🔴")
-          RANDOM_PROGRESS=${PROGRESS[$RANDOM % ${#PROGRESS[@]}]}
-
-          # Append new entry with better formatting
-          echo "| $(date '+%Y-%m-%d') | $RANDOM_TYPE | $RANDOM_PROGRESS |" >> DEV_LOG.md
-
-          # Update summary statistics
-          if [ ! -f SUMMARY.md ]; then
-            cat <<EOF > SUMMARY.md
-            # Development Summary
-
-            \`\`\`mermaid
-            pie title Weekly Activity
-                "Features" : 0
-                "Bugfixes" : 0
-                "Refactors" : 0
-                "Docs" : 0
-                "Other" : 0
-            \`\`\`
-            EOF
-          fi
+          echo "- $(date '+%Y-%m-%d %H:%M:%S')" >> daily_log.md
 
       - name: Commit changes
         uses: EndBug/add-and-commit@v9
         with:
           author_name: "GitHub Actions"
           author_email: "actions@github.com"
-          message: "Daily development commit"
-          add:
-            DEV_LOG.md
-            SUMMARY.md
+          message: "Daily automated commit"
+          add: daily_log.md
           push: true
