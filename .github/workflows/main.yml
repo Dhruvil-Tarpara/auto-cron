@@ -18,7 +18,7 @@ jobs:
         run: |
           # Create or update the development log
           if [ ! -f DEV_LOG.md ]; then
-            cat << 'EOF' > DEV_LOG.md
+            cat <<EOF > DEV_LOG.md
             # Development Progress Tracker
 
             ## Project Activity Overview
@@ -41,17 +41,17 @@ jobs:
 
           # Update summary statistics
           if [ ! -f SUMMARY.md ]; then
-            cat << 'EOF' > SUMMARY.md
+            cat <<EOF > SUMMARY.md
             # Development Summary
 
-            ```mermaid
+            \`\`\`mermaid
             pie title Weekly Activity
                 "Features" : 0
                 "Bugfixes" : 0
                 "Refactors" : 0
                 "Docs" : 0
                 "Other" : 0
-            ```
+            \`\`\`
             EOF
           fi
 
