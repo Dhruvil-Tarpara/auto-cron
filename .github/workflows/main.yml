@@ -61,7 +61,7 @@ jobs:
           author_name: "GitHub Actions"
           author_email: "actions@github.com"
           message: "Daily development commit"
-          add: |
+          add:
             DEV_LOG.md
             SUMMARY.md
           push: true
